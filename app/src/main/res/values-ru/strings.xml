@@ -13,4 +13,5 @@
     <string name="menu_edit">Редактировать</string>
     <string name="error_empty_content">Пустое поле</string>
     <string name="cancel">Отмена</string>
+    <string name="Zero">0</string>
 </resources>

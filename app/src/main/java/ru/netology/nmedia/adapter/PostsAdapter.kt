@@ -3,6 +3,7 @@ package ru.netology.nmedia.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -52,14 +53,21 @@ class PostViewHolder(
             published.text = post.published
             content.text = post.content
 
-            likeCount.text = numToString(post.likes)
-            shareCount.text = numToString(post.share)
-            viewsCount.text = numToString(post.views)
-
-
-            likeIcon.setImageResource(
+            likeButton.text = numToString(post.likes)
+            likeButton.icon = ContextCompat.getDrawable(
+                likeButton.context,
                 if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
             )
+            likeButton.setOnClickListener {
+                onInteractionListener.onLike(post)
+            }
+
+            shareButton.text = numToString(post.share)
+            shareButton.setOnClickListener {
+                onInteractionListener.onShare(post)
+            }
+
+            viewsButton.text = numToString(post.views)
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
@@ -78,14 +86,6 @@ class PostViewHolder(
                         }
                     }
                 }.show()
-            }
-
-            likeIcon.setOnClickListener {
-                onInteractionListener.onLike(post)
-            }
-
-            shareIcon.setOnClickListener {
-                onInteractionListener.onShare(post)
             }
         }
     }
