@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/barrier"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@sample/posts.json/data/authorAvatar" />
+        app:srcCompat="@drawable/ic_netology" />
 
     <TextView
         android:id="@+id/author"
@@ -79,8 +79,6 @@
         app:layout_constraintTop_toBottomOf="@id/barrier"
         tools:text="@sample/posts.json/data/content" />
 
-    <!-- Домашка -->
-
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
@@ -98,7 +96,7 @@
         android:contentDescription="@string/description_like"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier2"
-        tools:srcCompat="@sample/like" />
+        app:srcCompat="@drawable/ic_like_24" />
 
     <TextView
         android:id="@+id/likeCount"
@@ -120,7 +118,7 @@
         android:contentDescription="@string/description_views"
         app:layout_constraintEnd_toStartOf="@id/viewsCount"
         app:layout_constraintTop_toBottomOf="@id/barrier2"
-        tools:srcCompat="@sample/views" />
+        app:srcCompat="@drawable/ic_views_24" />
 
     <TextView
         android:id="@+id/viewsCount"
@@ -144,7 +142,7 @@
         android:contentDescription="@string/description_share"
         app:layout_constraintStart_toEndOf="@+id/likeCount"
         app:layout_constraintTop_toBottomOf="@id/barrier2"
-        tools:srcCompat="@sample/share" />
+        app:srcCompat="@drawable/ic_share_24" />
 
     <TextView
         android:id="@+id/shareCount"
