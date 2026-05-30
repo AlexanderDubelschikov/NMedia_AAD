@@ -14,4 +14,8 @@
     <string name="error_empty_content">Content can\'t be empty</string>
     <string name="cancel">Cancel</string>
     <string name="Zero">0</string>
+    <string name="add_post">Add Post</string>
+    <string name="video_plug">Plug</string>
+    <string name="video_play">Play</string>
+    <string name="chooser_share_post">Share post</string>
 </resources>

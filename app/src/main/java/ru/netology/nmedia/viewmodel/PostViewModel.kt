@@ -17,7 +17,6 @@ private val empty = Post(
 )
 
 class PostViewModel : ViewModel() {
-    // упрощённый вариант
     private val repository: PostRepository = PostRepositoryInMemoryImpl()
     val data = repository.getAll()
     val edited = MutableLiveData(empty)
@@ -38,7 +37,6 @@ class PostViewModel : ViewModel() {
     }
 
     fun cancelEdit() {
-        // Возвращаем оригинальный пост, если редактирование было
         originalPost?.let { original ->
             edited.value = original
         }
@@ -48,7 +46,8 @@ class PostViewModel : ViewModel() {
 
     fun likeById(id: Long) = repository.likeById(id)
     fun removeById(id: Long) = repository.removeById(id)
-    fun shareById(id: Long) = repository.shareById(id)
+    fun updatePost(id: Long, content: String) = repository.updatePost(id, content)
+    //fun shareById(id: Long) = repository.shareById(id)
 }
 
 

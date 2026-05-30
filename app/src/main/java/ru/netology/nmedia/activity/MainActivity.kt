@@ -1,8 +1,9 @@
 package ru.netology.nmedia.activity
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.launch
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,11 +13,13 @@ import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 
 class MainActivity : AppCompatActivity() {
+
+    val viewModel: PostViewModel by viewModels()
+    var editingPostId = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +32,13 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val viewModel: PostViewModel by viewModels()
         val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) {
-                viewModel.edit(post)
+                editingPostId = post.id
+                val intent = Intent(this@MainActivity, NewPostActivity::class.java).apply {
+                    putExtra("edit_content", post.content)
+                }
+                startActivityForResult(intent, REQUEST_EDIT_POST)
             }
 
             override fun onLike(post: Post) {
@@ -44,7 +50,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onShare(post: Post) {
-                viewModel.shareById(post.id)
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
+                startActivity(shareIntent)
             }
         })
         binding.list.adapter = adapter
@@ -52,47 +65,31 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(posts)
         }
 
-        viewModel.edited.observe(this) { post ->
-            if (post.id != 0L) {
-                with(binding.content) {
-                    setText(post.content)
-                    AndroidUtils.showKeyboard(this)
-                }
-                binding.originalContentPreview.text = post.content
-                binding.cancelPanel.visibility = android.view.View.VISIBLE
-            } else {
-                binding.content.setText("")
-                binding.cancelPanel.visibility = android.view.View.GONE
-                AndroidUtils.hideKeyboard(binding.content)
-            }
+        val newPostLauncher = registerForActivityResult(NewPostResultContract) { result ->
+            result ?: return@registerForActivityResult
+            viewModel.save(result)
         }
 
-        binding.save.setOnClickListener {
-            with(binding.content) {
-                if (text.isNullOrBlank()) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        context.getString(R.string.error_empty_content),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-
-                viewModel.save(text.toString())
-
-                setText("")
-                clearFocus()
-                AndroidUtils.hideKeyboard(this)
-            }
-        }
-
-        binding.cancel.setOnClickListener {
-            binding.content.setText("")
-            binding.cancelPanel.visibility = android.view.View.GONE
-            AndroidUtils.hideKeyboard(binding.content)
-            viewModel.cancelEdit()
+        binding.fab.setOnClickListener {
+            newPostLauncher.launch()
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_EDIT_POST && resultCode == RESULT_OK && data != null) {
+            val newContent = data.getStringExtra(Intent.EXTRA_TEXT)
+            if (!newContent.isNullOrBlank() && editingPostId != 0L) {
+                viewModel.updatePost(editingPostId, newContent)
+                editingPostId = 0L   // сбрасываем
+            }
+        }
+    }
+
+    companion object {
+        private const val REQUEST_EDIT_POST = 1001
+    }
 }
+
 
 

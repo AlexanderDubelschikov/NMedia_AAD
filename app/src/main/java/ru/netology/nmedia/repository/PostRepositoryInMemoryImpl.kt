@@ -96,7 +96,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             likes = (nextId - 1).toInt() * 10,
             likedByMe = false,
             views = 995,
-            share = 1212
+            share = 1212,
+            video = "https://rutube.ru/video/12b5683ad278231d97f0432573d23f24/"
         ),
     ).reversed()
 
@@ -139,6 +140,13 @@ class PostRepositoryInMemoryImpl : PostRepository {
     override fun shareById(id: Long) {
         posts = posts.map {
             if (it.id != id) it else it.copy(share = it.share + 1)
+        }
+        data.value = posts
+    }
+
+    override fun updatePost(id: Long, content: String) {
+        posts = posts.map {
+            if (it.id == id) it.copy(content = content) else it
         }
         data.value = posts
     }

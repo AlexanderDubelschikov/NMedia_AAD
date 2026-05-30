@@ -74,19 +74,48 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_spacing"
         android:layout_marginBottom="@dimen/common_spacing"
-        app:layout_constraintBottom_toBottomOf="@id/barrier2"
         android:autoLink="web"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier"
         tools:text="@sample/posts.json/data/content" />
 
+    <FrameLayout
+        android:id="@+id/videoBlock"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/content"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/videoPlug"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/video_plug"
+            android:src="@drawable/ic_video_stop"/>
+
+        <ImageView
+            android:id="@+id/playButton"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/video_play"
+            android:src="@drawable/ic_play" />
+
+    </FrameLayout>
+
+
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="content"
+        app:constraint_referenced_ids="content, videoBlock"
         />
 
     <com.google.android.material.button.MaterialButton
@@ -103,7 +132,7 @@
         app:iconGravity="textStart"
         app:iconPadding="@dimen/text_spacing"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content" />
+        app:layout_constraintTop_toBottomOf="@id/barrier2" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/viewsButton"
@@ -121,7 +150,7 @@
         app:iconGravity="textStart"
         app:iconPadding="@dimen/text_spacing"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content" />
+        app:layout_constraintTop_toBottomOf="@id/barrier2" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/shareButton"
@@ -138,7 +167,7 @@
         app:iconGravity="textStart"
         app:iconPadding="@dimen/text_spacing"
         app:layout_constraintStart_toEndOf="@id/likeButton"
-        app:layout_constraintTop_toBottomOf="@id/content" />
+        app:layout_constraintTop_toBottomOf="@id/barrier2" />
 
 
 
