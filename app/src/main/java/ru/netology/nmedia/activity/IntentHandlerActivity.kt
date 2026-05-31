@@ -11,7 +11,12 @@ import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityIntentHandlerBinding
 
+import androidx.activity.viewModels
+import ru.netology.nmedia.viewmodel.PostViewModel
+
 class IntentHandlerActivity : AppCompatActivity() {
+    private val viewModel: PostViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -37,6 +42,15 @@ class IntentHandlerActivity : AppCompatActivity() {
                     .show()
                 return@let
             }
+
+            viewModel.save(text)
+            Snackbar.make(binding.root, R.string.post_saved, Snackbar.LENGTH_SHORT)
+                .show()
+
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            finish()
         }
     }
 }

@@ -18,4 +18,5 @@
     <string name="video_plug">Plug</string>
     <string name="video_play">Play</string>
     <string name="chooser_share_post">Share post</string>
+    <string name="post_saved">Post saved</string>
 </resources>
